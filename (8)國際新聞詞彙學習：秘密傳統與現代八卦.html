@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國際新聞詞彙學習：秘密傳統與現代八卦</title>
+    <!-- 添加 Google 字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 定義全局變量 */
+        :root {
+            --primary-color: #6b4423;
+            --secondary-color: #8b5e34;
+            --accent-color: #d4a373;
+            --background-color: #faf3e0;
+            --card-background: #fff8e7;
+            --text-color: #463f3a;
+            --link-color: #936639;
+            --hover-color: #7d4e24;
+            --highlight-color: #ffd79a;
+            --error-color: #e74c3c;
+            --success-color: #27ae60;
+        }
+
+        /* 全局設置 */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Arial', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-color);
+        }
+
+        /* 標題樣式 */
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: none;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+        }
+
+        h2 {
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: var(--text-color);
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* 特殊標題樣式 */
+        h2.words {
+            background-color: var(--error-color);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        h2.words:hover {
+            background-color: #c0392b;
+        }
+
+        h2.phrases {
+            background-color: var(--success-color);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        h2.phrases:hover {
+            background-color: #219a52;
+        }
+
+        #chineseh2 {
+            background-color: rgb(255, 157, 0);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        #chineseh2:hover {
+            background-color: #e67e22;
+        }
+
+        /* 內容區塊樣式 */
+        .news-content {
+            background-color: var(--card-background);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(107, 68, 35, 0.1);
+            margin-bottom: 30px;
+        }
+
+        /* 單字卡片樣式 */
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .word-card {
+            background-color: var(--card-background);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(107, 68, 35, 0.1);
+            transition: all 0.3s ease;
+            scroll-margin-top: 20px;
+        }
+
+        .word-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .word-card h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+
+        /* 高亮單字樣式 */
+        .highlight-word {
+            background-color: rgba(212, 163, 115, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--link-color);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .highlight-word:hover {
+            background-color: rgba(212, 163, 115, 0.4);
+            color: var(--hover-color);
+        }
+
+        /* 文本樣式 */
+        .definition, .example, .translation {
+            margin-bottom: 10px;
+        }
+
+        .example {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .translation {
+            color: var(--primary-color);
+        }
+
+        /* 翻譯內容和來源信息樣式 */
+        .translation-content, .source-info {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(107, 68, 35, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .source-info {
+            background-color: #f0f0f0;
+            border-left: 5px solid #bb20a1;
+            font-style: italic;
+            color: #34495e;
+        }
+
+        /* 返回頂部按鈕 */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: none;
+            text-decoration: none;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 高亮動畫 */
+        .highlighted {
+            animation: highlight 2s ease-out;
+        }
+
+        @keyframes highlight {
+            0% { background-color: var(--highlight-color); }
+            100% { background-color: transparent; }
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-content, .translation-content {
+                padding: 20px;
+            }
+
+            .back-to-top {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>國際新聞詞彙學習：秘密傳統與現代八卦</h1>
+
+    <div class="news-content">
+      <h2>The Clandestine Chronicles: From Ancient Oracles to Modern Gossip Boxes</h2>
+      
+      <div class="english-content">
+        <p>
+          Throughout history, humanity has <a href="#word-harbored" class="highlight-word">harbored</a> an <a href="#word-insatiable" class="highlight-word">insatiable</a> appetite for secrets and <a href="#word-clandestine" class="highlight-word">clandestine</a> information. The modern "gossip box" <a href="#word-phenomenon" class="highlight-word">phenomenon</a>, while seemingly <a href="#word-frivolous" class="highlight-word">frivolous</a>, actually represents a <a href="#word-fascinating" class="highlight-word">fascinating</a> <a href="#word-evolution" class="highlight-word">evolution</a> of ancient practices that have <a href="#word-permeated" class="highlight-word">permeated</a> civilizations for <a href="#word-millennia" class="highlight-word">millennia</a>.
+        </p>
+        
+        <p>
+          In ancient Greece, the Oracle of Delphi served as a <a href="#word-precursor" class="highlight-word">precursor</a> to today's anonymous confession culture. Citizens would <a href="#word-inscribe" class="highlight-word">inscribe</a> their deepest concerns on tablets, seeking divine guidance through the <a href="#word-enigmatic" class="highlight-word">enigmatic</a> <a href="#word-pronouncements" class="highlight-word">pronouncements</a> of the Pythia. Similarly, medieval <a href="#word-monasteries" class="highlight-word">monasteries</a> employed "confession boxes" where <a href="#word-penitents" class="highlight-word">penitents</a> could anonymously <a href="#word-divulge" class="highlight-word">divulge</a> their <a href="#word-transgressions" class="highlight-word">transgressions</a>.
+        </p>
+    
+        <p>
+          The Renaissance period witnessed the <a href="#word-proliferation" class="highlight-word">proliferation</a> of "libelli" – anonymous pamphlets containing <a href="#word-scandalous" class="highlight-word">scandalous</a> gossip about <a href="#word-aristocrats" class="highlight-word">aristocrats</a>. These <a href="#word-subversive" class="highlight-word">subversive</a> documents, often <a href="#word-circulated" class="highlight-word">circulated</a> <a href="#word-surreptitiously" class="highlight-word">surreptitiously</a>, served as precursors to modern <a href="#word-tabloid" class="highlight-word">tabloid</a> journalism.
+        </p>
+    
+        <p>
+          Today's gossip box <a href="#word-ingeniously" class="highlight-word">ingeniously</a> <a href="#word-synthesizes" class="highlight-word">synthesizes</a> these historical traditions with contemporary social dynamics. The <a href="#word-psychological" class="highlight-word">psychological</a> mechanisms underlying this practice remain <a href="#word-remarkably" class="highlight-word">remarkably</a> consistent across centuries, creating a <a href="#word-microcosm" class="highlight-word">microcosm</a> where social hierarchies temporarily dissolve.
+        </p>
+      </div>
+    </div>
+    
+    <div class="source-info">
+      <h3>文章資訊</h3>
+      <p><strong>來源：</strong>多個歷史文獻綜合</p>
+      <p><strong>作者：</strong>林知宸</p>
+      <p><strong>製作日期：</strong>2024/06/02</p>
+    </div>
+    <h2 class="words">單字解析</h2>
+    <div class="word-grid">
+      <div id="word-harbored" class="word-card">
+        <h4>Harbored</h4>
+        <p class="definition">中文釋義：懷有、庇護</p>
+        <p class="example">Many countries harbored refugees during the crisis.</p>
+        <p class="translation">許多國家在危機期間庇護了難民。</p>
+      </div>
+    
+      <div id="word-insatiable" class="word-card">
+        <h4>Insatiable</h4>
+        <p class="definition">中文釋義：永不滿足的、貪得無厭的</p>
+        <p class="example">He had an insatiable curiosity about the world.</p>
+        <p class="translation">他對這個世界有著永不滿足的好奇心。</p>
+      </div>
+    
+      <div id="word-clandestine" class="word-card">
+        <h4>Clandestine</h4>
+        <p class="definition">中文釋義：秘密的、私下的</p>
+        <p class="example">They held clandestine meetings in the basement.</p>
+        <p class="translation">他們在地下室舉行秘密會議。</p>
+      </div>
+    
+      <div id="word-phenomenon" class="word-card">
+        <h4>Phenomenon</h4>
+        <p class="definition">中文釋義：現象、奇觀</p>
+        <p class="example">Social media has become a global phenomenon.</p>
+        <p class="translation">社交媒體已成為一個全球性現象。</p>
+      </div>
+    
+      <div id="word-frivolous" class="word-card">
+        <h4>Frivolous</h4>
+        <p class="definition">中文釋義：輕浮的、無聊的</p>
+        <p class="example">She dismissed his concerns as frivolous worries.</p>
+        <p class="translation">她認為他的擔憂是無謂的顧慮。</p>
+      </div>
+    
+      <div id="word-fascinating" class="word-card">
+        <h4>Fascinating</h4>
+        <p class="definition">中文釋義：迷人的、極有趣的</p>
+        <p class="example">The history of ancient civilizations is fascinating.</p>
+        <p class="translation">古代文明的歷史非常迷人。</p>
+      </div>
+    
+      <div id="word-evolution" class="word-card">
+        <h4>Evolution</h4>
+        <p class="definition">中文釋義：演變、進化</p>
+        <p class="example">The evolution of technology has changed our lives.</p>
+        <p class="translation">科技的演變改變了我們的生活。</p>
+      </div>
+    
+      <div id="word-permeated" class="word-card">
+        <h4>Permeated</h4>
+        <p class="definition">中文釋義：滲透、瀰漫</p>
+        <p class="example">The smell of coffee permeated the entire house.</p>
+        <p class="translation">咖啡的香味瀰漫整個房子。</p>
+      </div>
+    
+      <div id="word-millennia" class="word-card">
+        <h4>Millennia</h4>
+        <p class="definition">中文釋義：千年（複數）</p>
+        <p class="example">These traditions have survived for millennia.</p>
+        <p class="translation">這些傳統延續了數千年。</p>
+      </div>
+    
+      <div id="word-precursor" class="word-card">
+        <h4>Precursor</h4>
+        <p class="definition">中文釋義：先驅、前身</p>
+        <p class="example">The abacus was a precursor to the modern calculator.</p>
+        <p class="translation">算盤是現代計算器的前身。</p>
+      </div>
+    
+      <div id="word-inscribe" class="word-card">
+        <h4>Inscribe</h4>
+        <p class="definition">中文釋義：刻寫、銘刻</p>
+        <p class="example">The ancient text was inscribed on stone tablets.</p>
+        <p class="translation">這段古文被刻在石碑上。</p>
+      </div>
+    
+      <div id="word-enigmatic" class="word-card">
+        <h4>Enigmatic</h4>
+        <p class="definition">中文釋義：神秘的、難解的</p>
+        <p class="example">She gave an enigmatic smile and walked away.</p>
+        <p class="translation">她露出一個神秘的微笑然後走開了。</p>
+      </div>
+    
+      <div id="word-pronouncements" class="word-card">
+        <h4>Pronouncements</h4>
+        <p class="definition">中文釋義：宣告、聲明</p>
+        <p class="example">The court made several important pronouncements.</p>
+        <p class="translation">法院作出了幾項重要宣告。</p>
+      </div>
+    
+      <div id="word-monasteries" class="word-card">
+        <h4>Monasteries</h4>
+        <p class="definition">中文釋義：修道院（複數）</p>
+        <p class="example">Medieval monasteries were centers of learning.</p>
+        <p class="translation">中世紀的修道院是學習的中心。</p>
+      </div>
+    
+      <div id="word-penitents" class="word-card">
+        <h4>Penitents</h4>
+        <p class="definition">中文釋義：懺悔者</p>
+        <p class="example">Penitents would confess their sins to the priest.</p>
+        <p class="translation">懺悔者會向神父告解他們的罪過。</p>
+      </div>
+    
+      <div id="word-divulge" class="word-card">
+        <h4>Divulge</h4>
+        <p class="definition">中文釋義：泄露、透露</p>
+        <p class="example">She refused to divulge the source of her information.</p>
+        <p class="translation">她拒絕透露她的信息來源。</p>
+      </div>
+    
+      <div id="word-transgressions" class="word-card">
+        <h4>Transgressions</h4>
+        <p class="definition">中文釋義：過錯、違法行為</p>
+        <p class="example">Minor transgressions were often overlooked.</p>
+        <p class="translation">小過錯通常被忽視。</p>
+      </div>
+    
+      <div id="word-proliferation" class="word-card">
+        <h4>Proliferation</h4>
+        <p class="definition">中文釋義：激增、擴散</p>
+        <p class="example">The proliferation of social media platforms continues.</p>
+        <p class="translation">社交媒體平台持續激增。</p>
+      </div>
+    
+      <div id="word-scandalous" class="word-card">
+        <h4>Scandalous</h4>
+        <p class="definition">中文釋義：醜聞的、聳人聽聞的</p>
+        <p class="example">The newspaper published scandalous allegations.</p>
+        <p class="translation">報紙發布了聳人聽聞的指控。</p>
+      </div>
+    
+      <div id="word-aristocrats" class="word-card">
+        <h4>Aristocrats</h4>
+        <p class="definition">中文釋義：貴族</p>
+        <p class="example">The aristocrats lived in luxurious mansions.</p>
+        <p class="translation">貴族們住在豪華的宅邸中。</p>
+      </div>
+    
+      <div id="word-subversive" class="word-card">
+        <h4>Subversive</h4>
+        <p class="definition">中文釋義：顛覆性的、破壞性的</p>
+        <p class="example">The government banned subversive literature.</p>
+        <p class="translation">政府禁止顛覆性文學。</p>
+      </div>
+    
+      <div id="word-circulated" class="word-card">
+        <h4>Circulated</h4>
+        <p class="definition">中文釋義：流通、傳播</p>
+        <p class="example">The rumors circulated quickly through the town.</p>
+        <p class="translation">謠言在鎮上迅速傳播。</p>
+      </div>
+    
+      <div id="word-surreptitiously" class="word-card">
+        <h4>Surreptitiously</h4>
+        <p class="definition">中文釋義：秘密地、偷偷地</p>
+        <p class="example">He surreptitiously passed the note under the table.</p>
+        <p class="translation">他偷偷地在桌子底下傳遞紙條。</p>
+      </div>
+    
+      <div id="word-tabloid" class="word-card">
+        <h4>Tabloid</h4>
+        <p class="definition">中文釋義：小報、通俗報紙</p>
+        <p class="example">The tabloid published celebrity gossip.</p>
+        <p class="translation">這份小報發布了名人緋聞。</p>
+      </div>
+    
+      <div id="word-ingeniously" class="word-card">
+        <h4>Ingeniously</h4>
+        <p class="definition">中文釋義：巧妙地、獨創性地</p>
+        <p class="example">The problem was ingeniously solved.</p>
+        <p class="translation">這個問題被巧妙地解決了。</p>
+      </div>
+    
+      <div id="word-synthesizes" class="word-card">
+        <h4>Synthesizes</h4>
+        <p class="definition">中文釋義：合成、綜合</p>
+        <p class="example">The theory synthesizes several different ideas.</p>
+        <p class="translation">這個理論綜合了幾個不同的想法。</p>
+      </div>
+    
+      <div id="word-psychological" class="word-card">
+        <h4>Psychological</h4>
+        <p class="definition">中文釋義：心理的、心理學的</p>
+        <p class="example">The event had a psychological impact on everyone.</p>
+        <p class="translation">這個事件對每個人都有心理影響。</p>
+      </div>
+    
+      <div id="word-remarkably" class="word-card">
+        <h4>Remarkably</h4>
+        <p class="definition">中文釋義：顯著地、非常地</p>
+        <p class="example">The two sisters look remarkably alike.</p>
+        <p class="translation">這對姐妹看起來非常相像。</p>
+      </div>
+    
+      <div id="word-microcosm" class="word-card">
+        <h4>Microcosm</h4>
+        <p class="definition">中文釋義：縮影、小宇宙</p>
+        <p class="example">The school is a microcosm of society.</p>
+        <p class="translation">這所學校是社會的縮影。</p>
+      </div>
+    
+      <div id="word-hierarchies" class="word-card">
+        <h4>Hierarchies</h4>
+        <p class="definition">中文釋義：等級制度、階層（複數）</p>
+        <p class="example">Social hierarchies exist in most organizations.</p>
+        <p class="translation">社會階層存在於大多數組織中。</p>
+      </div>
+    </div>
+    <h2 id="chineseh2">中文翻譯</h2>
+    <div class="translation-content">
+      <p>
+        縱觀歷史，人類一直對秘密和隱秘信息懷有永不滿足的渴望。現代的「八卦箱」現象，雖然表面看來似乎無關緊要，實際上代表了一種古老習俗的迷人演變，這種習俗已經滲透人類文明數千年。
+      </p>
+    
+      <p>
+        在古希臘，德爾菲神諭作為今日匿名告解文化的先驅。公民們會將他們最深層的憂慮刻在泥板上，通過皮提亞神諭神秘的預言尋求神靈指引。同樣地，中世紀的修道院也設有「告解室」，讓懺悔者可以匿名向教會當局吐露他們的過錯。
+      </p>
+    
+      <p>
+        文藝復興時期見證了「libelli」（小冊子）的興起——這些匿名小冊子包含了關於貴族和政治人物的醜聞。這些具有顛覆性的文件經常被秘密流通，成為了現代小報新聞的前身。
+      </p>
+    
+      <p>
+        今天的八卦箱巧妙地將這些歷史傳統與當代社會動態結合在一起。支撐這種行為的心理機制在幾個世紀以來保持著驚人的一致性，創造了一個暫時消除社會等級的小世界。
+      </p>
+    </div>
+        
+    
+    <a href="#" class="back-to-top">返回頂部</a>
+
+<script>
+var backToTop = document.querySelector('.back-to-top');
+
+window.addEventListener('scroll', function() {
+  if (window.pageYOffset > 100) {
+    backToTop.style.display = 'block';
+  } else {
+    backToTop.style.display = 'none';
+  }
+});
+
+backToTop.addEventListener('click', function(e) {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+document.querySelectorAll('.highlight-word').forEach(word => {
+  word.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href');
+    const targetElement = document.querySelector(targetId);
+    
+    targetElement.scrollIntoView({
+      behavior: 'smooth'
+    });
+    
+    targetElement.classList.add('highlighted');
+    setTimeout(() => {
+      targetElement.classList.remove('highlighted');
+    }, 2000);
+  });
+});
+</script>
+</body>
+</html>
